@@ -1,3 +1,4 @@
+"""This module contains the model objects for the LitReview project"""
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -16,4 +17,5 @@ class User(AbstractUser):
 
     @property
     def full_name(self):
+        """Returns the full name of the user"""
         return f"{self.first_name} {self.last_name}"
