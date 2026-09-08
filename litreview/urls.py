@@ -19,7 +19,8 @@ from users.views import UserLoginView, UserSignUpView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', UserLoginView.as_view(template_name='users/loginpage_html'), name='login-page'),  # This line includes the login URL for the users app
-    path('', UserSignUpView.as_view(), name='signup-page'),  # This line includes the signup URL for the users app
-    
+    path('', UserLoginView.as_view(template_name='users/loginpage_html'),
+         name='login-page'),  # This line includes the login URL for the users app
+    path('', UserSignUpView.as_view(), 
+         name='signup-page'),  # This line includes the signup URL for the users app 
 ]

@@ -13,7 +13,12 @@ class User(AbstractUser):
     last_name = models.CharField(_("last name"), max_length=150, blank=False)
 
     # This is our custom field
-    following = models.ManyToManyField("self")
+    following = models.ManyToManyField("self", related_name="user_following", symmetrical=False)
+    followers = models.ManyToManyField("self", related_name="user_followers", symmetrical=False)
+    reviews = models.ManyToManyField("self", related_name="user_reviews", symmetrical=False)
+    username = models.CharField(_("username"), max_length=150, unique=True)
+    password = models.CharField(_("password"), max_length=128)
+    email = models.EmailField(_("email address"), unique=True)
 
     @property
     def full_name(self):
