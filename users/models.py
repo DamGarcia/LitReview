@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
 class User(AbstractUser):
     """Custom user class that has the "following" field"""
 
@@ -16,9 +15,9 @@ class User(AbstractUser):
     following = models.ManyToManyField("self", related_name="user_following", symmetrical=False)
     followers = models.ManyToManyField("self", related_name="user_followers", symmetrical=False)
     reviews = models.ManyToManyField("self", related_name="user_reviews", symmetrical=False)
-    username = models.CharField(_("username"), max_length=150, unique=True)
-    password = models.CharField(_("password"), max_length=128)
-    email = models.EmailField(_("email address"), unique=True)
+    # username = models.CharField(_("username"), max_length=150, unique=True)
+    # password = models.CharField(_("password"), max_length=128)
+    # email = models.EmailField(_("email address"), unique=True)
 
     @property
     def full_name(self):
