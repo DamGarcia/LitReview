@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from users.views import UserLoginView, UserSignUpView
 
+APP_NAME = 'users'
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', UserLoginView.as_view(template_name='users/loginpage_html'),
+    path('users/', UserSignUpView.as_view(template_name='users/signup_page.html'),
+         name='signup-page'),  # This line includes the signup URL for the users app
+    path('users/login', UserLoginView.as_view(template_name='users/login_page.html'),
          name='login-page'),  # This line includes the login URL for the users app
-    path('', UserSignUpView.as_view(), 
-         name='signup-page'),  # This line includes the signup URL for the users app 
 ]

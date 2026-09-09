@@ -1,3 +1,4 @@
+"""This module contains the models for the reviews app."""
 from django.core import validators
 from django.db import models
 from django.utils.text import Truncator

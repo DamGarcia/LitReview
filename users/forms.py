@@ -18,9 +18,4 @@ class UserSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         """This class defines the meta information for the UserSignUpForm"""
         model = User
-        Userfields = UserCreationForm.Meta.fields + (
-            'username' , 'password1', 'password2', 
-            'first_name' , 'last_name', 'email', 
-            'following', 'followers', 'reviews'
-            )
-        is_active = True
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
