@@ -2,11 +2,21 @@
 
 {% block content %}
 
-  <h2>Sign up</h2>
+{% if success %}
+
+<h2>Welcome to LitReview!</h2>
+
+<p class="success-message">Your account has been created successfully! You can now <a href="{% url 'login-page' %}">log in</a>.</p>
+
+{% else %}
+
+<h2>Sign up</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Sign Up">
+    <button type="submit">Sign up</button>
   </form>
+
+  {% endif %}
 
 {% endblock %}

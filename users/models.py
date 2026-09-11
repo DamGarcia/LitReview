@@ -1,10 +1,10 @@
 """This module contains the model objects for the LitReview project"""
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 class User(AbstractUser):
-    """Custom user class that has the "following" field"""
+    """This class defines the user model for the LitReview project"""
 
     # We reuse the fields definitions from the parent class, but change `blank` to False
     # We want to make sure first and last names are always provided
@@ -15,9 +15,11 @@ class User(AbstractUser):
     following = models.ManyToManyField("self", related_name="user_following", symmetrical=False)
     followers = models.ManyToManyField("self", related_name="user_followers", symmetrical=False)
     reviews = models.ManyToManyField("self", related_name="user_reviews", symmetrical=False)
-    # username = models.CharField(_("username"), max_length=150, unique=True)
-    # password = models.CharField(_("password"), max_length=128)
-    # email = models.EmailField(_("email address"), unique=True)
+    email = models.EmailField(_("email address"), unique=True, blank=False,
+                              error_messages={
+                                  "unique": _("A user with that email already exists.")
+                                  }
+                              )
 
     @property
     def full_name(self):

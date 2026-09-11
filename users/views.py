@@ -1,9 +1,10 @@
 """This module contains the views for the LitReview project"""
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
-from django.views import generic
-from django.views.generic import CreateView
-from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, DetailView
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, render
+
 from .forms import UserSignUpForm, UserLoginForm
 
 User = get_user_model()
@@ -34,13 +35,32 @@ class UserSignUpView(CreateView):
     # but defers the actual URL resolution until the view is called
     # using reverse_lazy() is necessary when defining class-based views, --
     # because the URL patterns are not yet loaded when the class is defined
-    success_url = reverse_lazy('login-page') # redirect to login page after successful signup
 
-class UserProfileView(generic.DetailView):
+    def form_valid(self, form):
+        """This method defines the behavior when a form is valid"""
+        form.save() # save the user object to the database
+        return render(self.request, 'users/signup_page.html',
+                      {'success': True})
+        # render the signup page with a success message
+
+    # def form_invalid(self, form):
+    #     """This method defines the behavior when a form is invalid"""
+    #     return render(self.request, 'users/signup_page.html',
+    #                   {'form': form, 'success': False})
+    #     # render the signup page with the form and an error message
+    # Unnecessary to override form_invalid() because
+    # the default behavior is to re-render the form with errors
+    # handled by the template, which is what we want
+
+class UserProfileView(DetailView):
     """This class handles the user profile page for the LitReview project"""
     model = User
     template_name = 'users/user_profile.html'
+    context_object_name = 'user_profile'
+    # because user is a default context variable name for the user object in Django
+    # we use user_profile as the context variable name to avoid confusion
 
-    def get_queryset(self):
-        """This method returns the queryset for the user profile page"""
-        return User.objects.filter(username=self.kwargs['username'])
+    def get_object(self, queryset=None):
+        """This method returns the user object for the user profile page"""
+        queryset = self.get_queryset().filter(username=self.kwargs.get('username'))
+        return get_object_or_404(queryset)
