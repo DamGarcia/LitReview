@@ -1,0 +1,247 @@
+/* --- Global Styles & Centering --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+/* Align headers & paragraphs */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    color: black;
+}
+
+/* --- Top Navigation Bar --- */
+header,
+.navbar {
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-sizing: border-box;
+}
+
+.nav-item {
+    flex: 1;
+    text-align: center;
+}
+
+.nav-item:first-child {
+    text-align: center;
+}
+
+.nav-item:last-child {
+    text-align: center;
+}
+
+.nav-item a {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-item a:hover {
+    color: #007bff;
+}
+
+/* --- Centered Main Content Area --- */
+main {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* --- Centered Forms --- */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1.25rem;
+}
+
+form p label {
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+form p .helptext {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.35rem;
+    line-height: 1.35;
+}
+
+ul {
+    margin: 0.35rem 0 0 0;
+    padding-left: 1.2rem;
+    width: 75%;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.helptext li {
+    text-align: left;
+    font-size: 0.8rem;
+    color: #6c757d;
+    line-height: 1.4;
+    margin-bottom: 0.2rem;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* --- Form Buttons & Action Links --- */
+button,
+input[type="submit"],
+input[type="button"],
+.btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.btn:hover {
+    background-color: #0056b3;
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active,
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* --- Outer Container --- */
+.search-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    background-color: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 50px;
+    /* Gives the pill shape */
+    padding: 4px 6px 4px 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
+}
+
+/* Subtle border color change on hover */
+.search-box:hover {
+    border-color: #cbd5e1;
+}
+
+/* --- Focus Glow Effect (Triggers when user clicks inside) --- */
+.search-box:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* --- The Text Field --- */
+.search-box input[type="search"] {
+    flex: 1;
+    /* Occupies all available horizontal space */
+    border: none;
+    background: transparent;
+    outline: none;
+    /* Removes default browser ring */
+    font-size: 0.95rem;
+    color: #1e293b;
+    padding: 8px 0;
+}
+
+/* Placeholder Styling */
+.search-box input[type="search"]::placeholder {
+    color: #94a3b8;
+}
+
+/* Removes default X clear button in WebKit browsers if desired */
+.search-box input[type="search"]::-webkit-search-decoration,
+.search-box input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+/* --- The Action Button --- */
+.search-box button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.search-box button:hover {
+    background-color: #2563eb;
+}
+
+.search-box button:active {
+    transform: scale(0.92);
+}

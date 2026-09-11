@@ -11,7 +11,7 @@ class User(AbstractUser):
     first_name = models.CharField(_("first name"), max_length=150, blank=False)
     last_name = models.CharField(_("last name"), max_length=150, blank=False)
 
-    # This is our custom field
+    # This is our custom fields
     following = models.ManyToManyField("self", related_name="user_following", symmetrical=False)
     followers = models.ManyToManyField("self", related_name="user_followers", symmetrical=False)
     reviews = models.ManyToManyField("self", related_name="user_reviews", symmetrical=False)
