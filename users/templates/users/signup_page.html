@@ -4,18 +4,19 @@
 
 {% if success %}
 
-<h2>Welcome to LitReview!</h2>
+  <h2>Welcome to LitReview!</h2>
 
-<p class="success-message">Your account has been created successfully! You can now <a href="{% url 'login-page' %}">log in</a>.</p>
+  <p class="success-message">Your account has been created successfully!</p> 
+  <p>You can now <a href="{% url 'login-page' %}">log in</a>.</p>
 
 {% else %}
 
-<h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-  </form>
+  <h2>Sign up</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="signup-btn" type="submit">Sign up</button>
+    </form>
 
   {% endif %}
 

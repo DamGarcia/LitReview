@@ -8,7 +8,40 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-wrap: wrap
+    flex-wrap: wrap;
+}
+
+.signup-btn {
+    background-color: #27cc6b;
+    color: #ffffff;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover state: slightly darker blue and rises slightly */
+.signup-btn:hover {
+    background-color: #20aa5a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Click state: depresses on click */
+.signup-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus state for accessibility */
+.signup-btn:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
 }
 
 /* Align headers & paragraphs */
@@ -40,19 +73,24 @@ header,
 
 .nav-item {
     flex: 1;
+    display: flex;
+    flex-wrap: wrap;
     text-align: center;
+    justify-content: center;
 }
 
 .nav-item:first-child {
     text-align: center;
+    justify-content: left;
 }
 
 .nav-item:last-child {
     text-align: center;
+    justify-content: right;
 }
 
 .nav-item a {
-    color: #2c3e50;
+    color: #3ce7c2;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
@@ -133,7 +171,6 @@ form input[type="password"],
 form input[type="email"],
 form textarea {
     width: 100%;
-    max-width: 400px;
     padding: 0.75rem 1rem;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -146,7 +183,7 @@ button,
 input[type="submit"],
 input[type="button"],
 .btn {
-    background-color: #007bff;
+    background-color: #00b144;
     color: #ffffff;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -176,14 +213,14 @@ input[type="button"]:active,
 /* --- Outer Container --- */
 .search-box {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     max-width: 450px;
     background-color: #ffffff;
     border: 2px solid #e2e8f0;
-    border-radius: 50px;
+    border-radius: 10px;
     /* Gives the pill shape */
-    padding: 4px 6px 4px 16px;
+    padding: 4px 6px 4px 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: all 0.25s ease-in-out;
 }
@@ -223,7 +260,7 @@ input[type="button"]:active,
     -webkit-appearance: none;
 }
 
-/* --- The Action Button --- */
+/* --- The Search Action Button --- */
 .search-box button {
     display: flex;
     align-items: center;
