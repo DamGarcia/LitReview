@@ -17,6 +17,12 @@ class Book(models.Model):
     image = models.ImageField(verbose_name="Book cover", null=True, blank=True)
     description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    author = models.CharField(
+        verbose_name="Book Author",
+        max_length=50,
+        blank=True,
+        null=True,
+        )
 
     def __str__(self):
         return f"{Truncator(self.title).chars(30)}"

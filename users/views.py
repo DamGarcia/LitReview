@@ -1,4 +1,4 @@
-"""This module contains the views for the LitReview project"""
+"""This module contains the user views for the LitReview project"""
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
 from django.views.generic import CreateView, DetailView
@@ -30,11 +30,6 @@ class UserSignUpView(CreateView):
     """This class handles the signup page for the LitReview project"""
     form_class = UserSignUpForm
     template_name = 'users/signup_page.html'
-    # reverse_lazy() resolves the URL name only when its needed
-    # this function completes a URL lookup at class-defintition time --
-    # but defers the actual URL resolution until the view is called
-    # using reverse_lazy() is necessary when defining class-based views, --
-    # because the URL patterns are not yet loaded when the class is defined
 
     def form_valid(self, form):
         """This method defines the behavior when a form is valid"""

@@ -1,0 +1,47 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<!-- header, centered, book title -->
+<h2>{{ book.title }} - {{ book.author }}</h2>
+
+<div class="book-details">
+    <!-- left inline: book image 
+     center aligned: book description -->
+     <div class="book-cover">
+         <img src="{{ book.image }}" alt="Cover of {{ book.title }}">
+     </div>
+ 
+     <div class="book-description">
+         <p>{ book.description }</p>
+     </div>
+</div>
+  
+{% if user.is_authenticated %}
+    <!-- insert review page url -->
+    <!-- center aligned: 'Post a review for this book' (button) -->
+     <button type="button">Post a review for this book</button>
+{% endif %}
+
+<!-- block level text box displaying relevant reviews
+Include:
+'New review by Alice on June 03, 2022 at 4:20PM'
+Review subject title + review star rating
+review content -->
+<!-- multiple reviews on page ??? - All reviews posted-->
+<section>
+    {% for review in review.book_set.all %}
+    <article>
+        <header>
+            <small>New review by {{ review.user.username }} on {{ review.created|date:"F d, Y \a\t g:iA" }}</small>
+        </header>
+
+        <h4>{{ review.headline }} - {{ review.rating }}</h4>
+        <p><small>{{ review.body }}</small></p>
+    </article>
+    {% empty %}
+        <p>No reviews yet. Be the first to post a review!</p>
+    {% endfor %}
+</section>
+
+
+{% endblock %}
