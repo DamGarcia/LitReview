@@ -17,13 +17,19 @@ from users.views import UserLoginView, UserSignUpView, UserProfileView
 from reviews.views import BookView
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
-APP_NAME = 'users'
+APP_NAME = 'users', 'reviews'
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('users/', UserSignUpView.as_view(), name='signup-page'),
     path('users/login', UserLoginView.as_view(), name='login-page'),
     path('users/<str:username>/', UserProfileView.as_view(), name='user-profile'),
-    path('bookreview/<str:title>/', BookView.as_view(), name='book-review')
+    path('bookreview/<int:id>/', BookView.as_view(), name='book-review')
 ]
+
+# builds the image rendering path for you
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -14,7 +14,8 @@ class Book(models.Model):
         null=False,
         blank=False,
     )
-    image = models.ImageField(verbose_name="Book cover", null=True, blank=True)
+    # upload_to= saves images for a Book under MEDIA_ROOT/images
+    image = models.ImageField(upload_to='images/', verbose_name="Book cover", null=True, blank=True)
     description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     author = models.CharField(
@@ -39,7 +40,8 @@ class Review(models.Model):
     rating = models.PositiveSmallIntegerField(
         validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)]
     )
-    book = models.ForeignKey("reviews.Book", on_delete=models.CASCADE)
+    # related_name= sets the ForeignKey reference to 'reviews'
+    book = models.ForeignKey("reviews.Book", on_delete=models.CASCADE, related_name="reviews")
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

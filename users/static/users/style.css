@@ -71,6 +71,10 @@ header,
     box-sizing: border-box;
 }
 
+.nav-search {
+
+}
+
 .nav-item {
     flex: 1;
     display: flex;

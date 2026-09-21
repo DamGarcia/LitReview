@@ -12,17 +12,17 @@
             <div class="nav-item">
                 <nav><strong>LITReview</strong></nav>
             </div>
-            <div class="nav-item">
+            <div class="nav-search">
                 <form action="/search/" method="get" class="search-box">
                     <input type="search" name="q" placeholder="Search for a book..." aria-label="Search" required />
                 </form>
             </div>
+            <!-- this auth check happens in base, because the if check
+             happens once per request, at the point the nav is rendered
+             which is inside this base template -->
             <div class="nav-item">
-                <!-- this auth check happens in base, because the {% if %} check
-                 happens once per request, at the point the nav is rendered
-                 which is inside this base template -->
                 {% if user.is_authenticated %}
-                    <a href="{% url 'user-profile' %}">My profile</a>
+                    <a href="{% url 'user-profile' user.username %}">My profile</a>
                 {% endif %}
             </div>
             <div class="nav-item">

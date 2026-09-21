@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+{% extends 'reviews/base.html' %}
 
 {% block content %}
 <!-- header, centered, book title -->
@@ -8,18 +8,23 @@
     <!-- left inline: book image 
      center aligned: book description -->
      <div class="book-cover">
-         <img src="{{ book.image }}" alt="Cover of {{ book.title }}">
+        {% if book.image %}
+            <img src="{{ book.image.url }}" alt="Cover of {{ book.title }}">
+        {% endif %}
      </div>
- 
+
      <div class="book-description">
-         <p>{ book.description }</p>
+         <p>{{ book.description }}</p>
      </div>
 </div>
   
 {% if user.is_authenticated %}
     <!-- insert review page url -->
     <!-- center aligned: 'Post a review for this book' (button) -->
-     <button type="button">Post a review for this book</button>
+     <a class="signup-btn" href="{% url 'book-review' book.id %}">Post a review for this book</a>
+{% else %}
+    <!-- insert login page url  -->
+     <a class="signup-btn" href="{% url 'signup-page' %}">Sign up/Login to post a review!</a>
 {% endif %}
 
 <!-- block level text box displaying relevant reviews
@@ -29,7 +34,8 @@ Review subject title + review star rating
 review content -->
 <!-- multiple reviews on page ??? - All reviews posted-->
 <section>
-    {% for review in review.book_set.all %}
+    <!-- Review model has ForeignKey to Book with related_name being called here -->
+    {% for review in book.reviews.all %}
     <article>
         <header>
             <small>New review by {{ review.user.username }} on {{ review.created|date:"F d, Y \a\t g:iA" }}</small>

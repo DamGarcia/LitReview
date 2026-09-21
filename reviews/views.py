@@ -7,9 +7,9 @@ class BookView(DetailView):
     """This view displays individual book details"""
     model = Book
     template_name = 'reviews/book_view.html'
-    context_object_name = 'book_view'
+    context_object_name = 'book'
 
     def get_object(self, queryset=None):
         """This method returns the individual book for viewing"""
-        queryset = self.get_queryset().filter(title=self.kwargs.get('title'))
+        queryset = self.get_queryset().filter(id=self.kwargs.get('id'))
         return get_object_or_404(queryset)
