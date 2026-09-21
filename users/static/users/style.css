@@ -23,6 +23,7 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
 }
 
 /* Hover state: slightly darker blue and rises slightly */
@@ -59,7 +60,6 @@ p {
 }
 
 /* --- Top Navigation Bar --- */
-header,
 .navbar {
     width: 100%;
     background-color: #ffffff;
@@ -67,12 +67,8 @@ header,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem 0 1rem;
     box-sizing: border-box;
-}
-
-.nav-search {
-
 }
 
 .nav-item {
@@ -81,6 +77,7 @@ header,
     flex-wrap: wrap;
     text-align: center;
     justify-content: center;
+    padding: 2px;
 }
 
 .nav-item:first-child {
@@ -90,7 +87,8 @@ header,
 
 .nav-item:last-child {
     text-align: center;
-    justify-content: right;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .nav-item a {
@@ -104,13 +102,18 @@ header,
     color: #007bff;
 }
 
+.search-bar {
+    display: flex;
+    justify-content: center;;
+    width: 1400px;
+    margin-left: 125px;
+}
+
 /* --- Centered Main Content Area --- */
 main {
     width: 100%;
-    max-width: 600px;
     margin: 2rem auto;
     padding: 0 1rem;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -216,15 +219,13 @@ input[type="button"]:active,
 
 /* --- Outer Container --- */
 .search-box {
-    display: flex;
-    align-items: flex-start;
     width: 100%;
     max-width: 450px;
     background-color: #ffffff;
     border: 2px solid #e2e8f0;
     border-radius: 10px;
     /* Gives the pill shape */
-    padding: 4px 6px 4px 8px;
+    padding: 5px 15px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: all 0.25s ease-in-out;
 }
@@ -250,7 +251,7 @@ input[type="button"]:active,
     /* Removes default browser ring */
     font-size: 0.95rem;
     color: #1e293b;
-    padding: 8px 0;
+    padding: 8px 0px 8px 45px;
 }
 
 /* Placeholder Styling */

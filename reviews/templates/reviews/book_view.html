@@ -7,11 +7,9 @@
 <div class="book-details">
     <!-- left inline: book image 
      center aligned: book description -->
-     <div class="book-cover">
-        {% if book.image %}
-            <img src="{{ book.image.url }}" alt="Cover of {{ book.title }}">
-        {% endif %}
-     </div>
+    {% if book.image %}
+        <img src="{{ book.image.url }}" alt="Cover of {{ book.title }}">
+    {% endif %}
 
      <div class="book-description">
          <p>{{ book.description }}</p>
@@ -21,10 +19,10 @@
 {% if user.is_authenticated %}
     <!-- insert review page url -->
     <!-- center aligned: 'Post a review for this book' (button) -->
-     <a class="signup-btn" href="{% url 'book-review' book.id %}">Post a review for this book</a>
+     <a class="review-btn" href="{% url 'book-review' book.id %}">Post a review for this book</a>
 {% else %}
     <!-- insert login page url  -->
-     <a class="signup-btn" href="{% url 'signup-page' %}">Sign up/Login to post a review!</a>
+     <a class="review-btn" href="{% url 'signup-page' %}">Sign up/Login to post a review!</a>
 {% endif %}
 
 <!-- block level text box displaying relevant reviews
@@ -38,10 +36,15 @@ review content -->
     {% for review in book.reviews.all %}
     <article>
         <header>
-            <small>New review by {{ review.user.username }} on {{ review.created|date:"F d, Y \a\t g:iA" }}</small>
+            <small>New review by <u>{{ review.user.username }}</u> on {{ review.created|date:"F d, Y \a\t g:iA" }}</small>
+            <!-- if the review was made by the logged-in user add edit/delete features -->
+            {% if user.username == review.user.username %}
+            <a href="{% url 'review-update' review.id %}">Update review <span>&#9998;</span></a>
+            <a href="{% url 'review-delete' %}">Delete review <span>&#128465;</span></a>
+            {% endif %}
         </header>
 
-        <h4>{{ review.headline }} - {{ review.rating }}</h4>
+        <h4>{{ review.headline }} - {{ review.rating }} &#9733</h4>
         <p><small>{{ review.body }}</small></p>
     </article>
     {% empty %}

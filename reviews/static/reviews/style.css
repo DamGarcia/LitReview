@@ -1,0 +1,67 @@
+.book-details {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 90%;
+    padding-bottom: 36px;
+}
+
+.book-details img {
+    width: 250px;
+    max-width: 35%;
+    height: auto;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.book-description {
+    width: 70%;
+    margin: 85 0 70 0;
+}
+
+.book-description p {
+    max-width: 90%;
+    justify-self: center;
+    height: 125px;
+    text-align: left;
+}
+
+.review-btn {
+    background-color: #27cc6b;
+    color: #ffffff;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+section {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 80%;
+    justify-content: left;
+}
+
+article {
+    text-align: left;
+    padding-left: 5px;
+    padding-top: 5px;
+    border: 2px solid black;
+    margin-bottom: 40px;
+}
+
+article h4 {
+    text-align: left;
+}
+
+article p {
+    text-align: left;
+    max-width: 450px;
+}
