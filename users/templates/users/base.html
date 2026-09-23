@@ -12,7 +12,7 @@
             <div class="nav-item">
                 <nav><strong>LITReview</strong></nav>
             </div>
-            <div class="nav-search">
+            <div class="search-bar">
                 <form action="/search/" method="get" class="search-box">
                     <input type="search" name="q" placeholder="Search for a book..." aria-label="Search" required />
                 </form>
@@ -27,7 +27,16 @@
             </div>
             <div class="nav-item">
                 <nav>
-                    {% if '/login/' in request.path %}
+                    {% if user.is_authenticated %}
+                    <!-- LogoutView ONLY accepts POST methods
+                                        a href link is a GET request 
+                                        wrapping logout in a form and CSRF protection
+                                        ensures deliberate, protected action when logging out -->
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                    </form>
+                    {% elif 'login/' in request.path %}
                         <a href="{% url 'signup-page' %}">Sign up/login</a>
                     {% else %}
                         <a href="{% url 'login-page' %}">Sign up/Login</a>

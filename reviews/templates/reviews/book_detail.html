@@ -36,15 +36,14 @@ review content -->
     {% for review in book.reviews.all %}
     <article>
         <header>
-            <small>New review by <u>{{ review.user.username }}</u> on {{ review.created|date:"F d, Y \a\t g:iA" }}</small>
+            <small>New review by <u>{{ review.user.username }}</u> on {{ review.created|date:"F d, Y \a\t g:iA" }}</small> |
             <!-- if the review was made by the logged-in user add edit/delete features -->
             {% if user.username == review.user.username %}
-            <a href="{% url 'review-update' review.id %}">Update review <span>&#9998;</span></a>
-            <a href="{% url 'review-delete' %}">Delete review <span>&#128465;</span></a>
+            <small>Update review <span>&#9998;</span></small> |
+            <small>Delete review <span>&#128465;</span></small>
             {% endif %}
         </header>
-
-        <h4>{{ review.headline }} - {{ review.rating }} &#9733</h4>
+        {{ review.headline }} - <div class="star-rating" style="--rating: {{ review.rating }};" aria-label="{{ review.rating }} out of 5 stars"></div>
         <p><small>{{ review.body }}</small></p>
     </article>
     {% empty %}

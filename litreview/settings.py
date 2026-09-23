@@ -19,6 +19,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Establishes where media uploads live: MEDIA_ROOT
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'images'
+LOGIN_URL = 'login-page'
+LOGIN_REDIRECT_URL = 'user-profile'
+LOGOUT_REDIRECT_URL = 'login-page'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/

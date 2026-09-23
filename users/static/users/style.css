@@ -55,7 +55,6 @@ h6,
 p {
     text-align: center;
     width: 100%;
-    max-width: 400px;
     color: black;
 }
 
@@ -67,7 +66,7 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1rem 0 1rem;
+    padding: 1rem 1rem 0.25rem 1rem;
     box-sizing: border-box;
 }
 
@@ -87,8 +86,6 @@ p {
 
 .nav-item:last-child {
     text-align: center;
-    margin-left: 20px;
-    margin-right: 20px;
 }
 
 .nav-item a {
@@ -109,11 +106,44 @@ p {
     margin-left: 125px;
 }
 
+.logout-form {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+.logout-form button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #3ce7c2;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.logout-form button:hover,
+.logout-form button:active,
+.logout-form button:focus-visible {
+    color: #007bff;
+    background: none;
+    outline: none;
+}
+
+.logout-form button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;;
+}
+
 /* --- Centered Main Content Area --- */
 main {
     width: 100%;
     margin: 2rem auto;
-    padding: 0 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,8 +187,8 @@ form p .helptext {
 
 ul {
     margin: 0.35rem 0 0 0;
-    padding-left: 1.2rem;
-    width: 75%;
+    padding-left: 40px;
+    width: 23%;
     box-sizing: border-box;
     text-align: left;
     font-size: 0.8rem;

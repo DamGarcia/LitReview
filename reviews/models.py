@@ -8,22 +8,22 @@ class Book(models.Model):
     """Model for the book entity"""
 
     title = models.CharField(
-        verbose_name="Book title",
+        verbose_name="Title",
         max_length=255,
         db_index=True,
         null=False,
         blank=False,
     )
-    # upload_to= saves images for a Book under MEDIA_ROOT/images
-    image = models.ImageField(upload_to='images/', verbose_name="Book cover", null=True, blank=True)
     description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     author = models.CharField(
-        verbose_name="Book Author",
+        verbose_name="Author",
         max_length=50,
         blank=True,
         null=True,
         )
+    # upload_to= saves images for a Book under MEDIA_ROOT/images
+    image = models.ImageField(upload_to='images/', verbose_name="Image", null=True, blank=True)
 
     def __str__(self):
         return f"{Truncator(self.title).chars(30)}"

@@ -30,9 +30,16 @@
         <div class="nav-item">
             <nav>
                 {% if user.is_authenticated %}
-                <a href="{% url 'signup-page' %}">Log out</a>
+                <!-- LogoutView ONLY accepts POST methods
+                 a href link is a GET request 
+                 wrapping logout in a form and CSRF protection
+                 ensures deliberate, protected action when logging out -->
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                    </form>
                 {% else %}
-                <a href="{% url 'login-page' %}">Sign up/Login</a>
+                    <a href="{% url 'login-page' %}">Sign up/Login</a>
                 {% endif %}
             </nav>
         </div>

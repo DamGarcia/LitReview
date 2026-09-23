@@ -1,0 +1,31 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+<!-- only logged in users can create a book -->
+<!-- when a new book is created, redirect to the book view page -->
+ <!-- Once a book is created, only admins can edit and delete -->
+<!-- the user will upload images to the platform, where will they be stored? -->
+
+<!-- Title
+ text box -->
+
+ <!-- Description
+  text box -->
+
+  <!-- image
+   upload file button -->
+
+   <!-- submit button -->
+
+   <h2>Create a Book</h2>
+   {% if user.is_authenticated %}
+      <form action="" method="post">
+         {% csrf_token %}
+         {{ form.as_p }}
+         <input type="submit" value="Submit" class="submit-btn">
+      </form>
+   {% else %}
+      <a href="{% url 'signup-page' %}">Sign up to create a new book!</a>
+   {% endif %}
+
+{% endblock %}
