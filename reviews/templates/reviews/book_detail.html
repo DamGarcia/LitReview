@@ -19,7 +19,7 @@
 {% if user.is_authenticated %}
     <!-- insert review page url -->
     <!-- center aligned: 'Post a review for this book' (button) -->
-     <a class="review-btn" href="{% url 'book-review' book.id %}">Post a review for this book</a>
+     <a class="review-btn" href="{% url 'review-create' book.id %}">Post a review for this book</a>
 {% else %}
     <!-- insert login page url  -->
      <a class="review-btn" href="{% url 'signup-page' %}">Sign up/Login to post a review!</a>
@@ -39,11 +39,11 @@ review content -->
             <small>New review by <u>{{ review.user.username }}</u> on {{ review.created|date:"F d, Y \a\t g:iA" }}</small> |
             <!-- if the review was made by the logged-in user add edit/delete features -->
             {% if user.username == review.user.username %}
-            <small>Update review <span>&#9998;</span></small> |
-            <small>Delete review <span>&#128465;</span></small>
+            <small><a href="{% url 'review-update' book.id %}">Update review</a><span>&#9998;</span></small> |
+            <small><a href="{% url 'review-delete' book.id %}">Delete review</a><span>&#128465;</span></small>
             {% endif %}
         </header>
-        {{ review.headline }} - <div class="star-rating" style="--rating: {{ review.rating }};" aria-label="{{ review.rating }} out of 5 stars"></div>
+        <strong>{{ review.headline }}</strong> - <div class="star-rating-display" style="--rating: {{ review.rating }};" aria-label="{{ review.rating }} out of 5 stars"></div>
         <p><small>{{ review.body }}</small></p>
     </article>
     {% empty %}

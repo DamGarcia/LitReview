@@ -1,0 +1,4 @@
+<input type="radio" name="{{ widget.name }}" value="{{ widget.value }}" 
+{% if widget.attrs.checked %}checked{% endif %}
+    id="{{ widget.attrs.id }}" class="star-input">
+<label for="{{ widget.attrs.id }}" class="star-label" aria-label="Rate {{ widget.value }} out of 5"></label>

@@ -1,0 +1,31 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+<h1>Post a Review</h1>
+
+<h3>{{ book.title }} - {{ book.author }}</h3>
+
+<div class="book-details">
+    <!-- left inline: book image 
+     center aligned: book description -->
+    {% if book.image %}
+    <img src="{{ book.image.url }}" alt="Cover of {{ book.title }}">
+    {% endif %}
+
+    <div class="book-description">
+        <p>{{ book.description }}</p>
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+{% else %}
+    <a href="{% url 'signup-page' %}">Sign up to post a review!</a>
+{% endif %}
+
+{% endblock %}

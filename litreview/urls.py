@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from users.views import UserLoginView, UserSignUpView, UserProfileView
-from reviews.views import BookView, BookCreate
+from reviews.views import BookView, BookCreate, ReviewCreate, ReviewUpdate, ReviewDelete
 
 APP_NAME = 'users', 'reviews'
 
@@ -29,8 +29,11 @@ urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login-page'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('users/<str:username>/', UserProfileView.as_view(), name='user-profile'),
-    path('book/<int:id>/', BookView.as_view(), name='book-review'),
     path('book/add/', BookCreate.as_view(), name='book-create'),
+    path('book/<int:book_id>/', BookView.as_view(), name='book-review'),
+    path('book/<int:book_id>/review/add/', ReviewCreate.as_view(), name='review-create'),
+    path('book/<int:book_id>/review/update/', ReviewUpdate.as_view(), name='review-update'),
+    path('book/<int:book_id>/review/delete/', ReviewDelete.as_view(), name='review-delete'),
 ]
 
 # builds the image rendering path for you (dev only configuration for image rendering)

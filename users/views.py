@@ -1,6 +1,7 @@
 """This module contains the user views for the LitReview project"""
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
@@ -47,7 +48,7 @@ class UserSignUpView(CreateView):
     # the default behavior is to re-render the form with errors
     # handled by the template, which is what we want
 
-class UserProfileView(DetailView):
+class UserProfileView(LoginRequiredMixin, DetailView):
     """This class handles the user profile page for the LitReview project"""
     model = User
     template_name = 'users/user_profile.html'

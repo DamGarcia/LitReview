@@ -3,7 +3,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from PIL import Image
-from reviews.models import Book
+from reviews.models import Book, Review
+from reviews.widgets import StarRatingWidget
 
 MAX_UPLOAD_SIZE = 5 * 1024 * 1024
 
@@ -61,3 +62,16 @@ class BookForm(forms.ModelForm):
         image.seek(0)
 
         return image
+
+class ReviewForm(forms.ModelForm):
+    """Form for creating a new review"""
+    rating = forms.ChoiceField(
+        choices=[(i, i) for i in range(5, 0, -1)],
+        widget=StarRatingWidget,
+    )
+
+    class Meta:
+        """Configures what model is used for this form
+        and any fields to be included/excluded"""
+        model = Review
+        exclude = ['book', 'user', 'created', 'updated']

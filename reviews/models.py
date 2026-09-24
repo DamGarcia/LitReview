@@ -35,16 +35,24 @@ class Book(models.Model):
 class Review(models.Model):
     """Model for the review entity"""
 
+    # related_name= sets the ForeignKey reference to 'reviews'
+    book = models.ForeignKey("reviews.Book", on_delete=models.CASCADE, related_name="reviews")
     headline = models.CharField(max_length=255)
     body = models.TextField(blank=False, null=False)
     rating = models.PositiveSmallIntegerField(
         validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)]
     )
-    # related_name= sets the ForeignKey reference to 'reviews'
-    book = models.ForeignKey("reviews.Book", on_delete=models.CASCADE, related_name="reviews")
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        """This class handles configuration of the model"""
+        constraints = [
+            models.UniqueConstraint(fields=['book', 'user'], name='one_review_per_user_per_book')
+        ]
+        # this sets the default ordering | '-' = descending = newest first
+        ordering = ['-created']
 
     def __str__(self):
         return f"{Truncator(self.headline).chars(30)} (by {self.user.full_name})"
