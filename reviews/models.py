@@ -36,13 +36,15 @@ class Review(models.Model):
     """Model for the review entity"""
 
     # related_name= sets the ForeignKey reference to 'reviews'
-    book = models.ForeignKey("reviews.Book", on_delete=models.CASCADE, related_name="reviews")
+    book = models.ForeignKey("reviews.Book", on_delete=models.CASCADE, related_name='reviews')
     headline = models.CharField(max_length=255)
     body = models.TextField(blank=False, null=False)
     rating = models.PositiveSmallIntegerField(
         validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)]
     )
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    # related_name= is from the 'targets' perspective / a Review has a user, a User has reviews
+    # can have the same related_name= because different model targets
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="reviews")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

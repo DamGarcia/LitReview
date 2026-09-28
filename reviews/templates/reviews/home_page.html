@@ -1,0 +1,63 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h2>Reviews by users you follow</h2>
+{% else %}
+    <h2>Recent reviews</h2>
+{% endif %}
+
+<section class="homepage-reviews">
+{% for review in reviews %} <!-- 'reviews' = our context_object_name = page content -->
+
+    <article class="review-card-book-details">
+        {% if review.book.image %}
+            <img class="review-card-image" src="{{ review.book.image.url }}" alt="Cover of {{ review.book.title }}">
+        {% endif %}
+
+        <div class="review-card-content">
+
+            <p><a href="{% url 'book-review' review.book_id %}">{{ review.book.title }} - {{ review.book.author }}</a></p> <!-- comes from select_related('book') -->
+
+            <strong>{{ review.headline }}</strong> - <div class="star-rating-display" style="--rating: {{ review.rating }};"
+                aria-label="{{ review.rating }} out of 5 stars"></div>
+            <p class="review-preview"><small>{{ review.body|truncatewords:40 }}</small></p> <!-- prevents spillover, keeps the review-cards uniform in height -->
+
+            <small>New review by <u>{{ review.user.full_name }}</u> on {{ review.created|date:"F d, Y \a\t g:iA" }}</small>
+        </div>
+    </article>
+
+    {% empty %}
+        <p>No reviews to read. Follow other readers to see their latest reviews!</p>
+    {% endfor %}
+</section>
+
+{% if is_paginated %}
+    <nav class="pagination" aria-lavel="Review homepage">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if show_all %}&view=all{% endif %}">Previous</a> <!-- ?page=N link: resolves against the current URL, no hardcoded paths-->
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if show_all %}&view=all{% endif %}">Next</a>
+            <a href="?page={{ paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </nav>
+{% endif %}
+
+<!-- Button: See all recent reviews -->
+{% if user.is_authenticated %}
+    {% if show_all %}
+        <a href="?" class="btn">Show latest reviews per book</a> <!-- "?" = no params, back to highlights, page 1 -->
+    {% else %}
+        <a href="?view=all" class="btn">See all recent reviews</a> <!-- no page params, always land on page 1 -->
+    {% endif %}
+{% else %}
+    <p><a href="{% url 'login-page' %}">Log in</a> to see reviews from people you follow</p>
+{% endif %}
+
+{% endblock %}

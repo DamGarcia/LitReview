@@ -4,7 +4,7 @@
 <!-- header, centered, book title -->
 <h2>{{ book.title }} - {{ book.author }}</h2>
 
-<div class="book-details">
+<section class="book-details">
     <!-- left inline: book image 
      center aligned: book description -->
     {% if book.image %}
@@ -14,7 +14,7 @@
      <div class="book-description">
          <p>{{ book.description }}</p>
      </div>
-</div>
+</section>
   
 {% if user.is_authenticated %}
     <!-- insert review page url -->

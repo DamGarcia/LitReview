@@ -1,7 +1,8 @@
 .book-details {
     display: flex;
+    flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-evenly;
     width: 90%;
     padding-bottom: 36px;
 }
@@ -20,8 +21,8 @@
 }
 
 .book-description p {
-    max-width: 90%;
-    justify-self: center;
+    max-width: 80%;
+    justify-self: left;
     height: 125px;
     text-align: left;
 }
@@ -128,4 +129,30 @@ textarea.create-form {
 
 .star-rating-input .star-input:checked ~ .star-label {
     color: #FFD700;
+}
+
+.homepage-reviews {
+    max-width: 50%;
+    align-items: center;
+}
+
+.review-card-image {
+    max-height: 250px;
+    padding: 20 30 45 30;
+    max-width: 30%;
+}
+
+.review-card-book-details {
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+}
+
+.review-card-content {
+    width: 60%;
+}
+
+.review-preview {
+    text-align: left;
+    max-width: 100%;
 }

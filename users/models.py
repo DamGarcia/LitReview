@@ -12,9 +12,7 @@ class User(AbstractUser):
     last_name = models.CharField(_("last name"), max_length=150, blank=False)
 
     # This is our custom fields
-    following = models.ManyToManyField("self", related_name="user_following", symmetrical=False)
-    followers = models.ManyToManyField("self", related_name="user_followers", symmetrical=False)
-    reviews = models.ManyToManyField("self", related_name="user_reviews", symmetrical=False)
+    following = models.ManyToManyField("self", related_name="followers", symmetrical=False, blank=True)
     email = models.EmailField(_("email address"), unique=True, blank=False,
                               error_messages={
                                   "unique": _("A user with that email already exists.")
