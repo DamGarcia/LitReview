@@ -1,11 +1,20 @@
 """This module contains the book reviews view for the LitReview Project"""
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import IntegrityError
-from django.urls import reverse, reverse_lazy
+from urllib.parse import urlencode
 from django.views.generic import DeleteView, DetailView, CreateView, ListView, UpdateView
+from django.core.exceptions import FieldDoesNotExist, ImproperlyConfigured
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
-from .models import Book, Review
+from django.core.paginator import InvalidPage
+from django.urls import reverse, reverse_lazy
+from django.http import HttpResponseRedirect
+from django.contrib.auth import get_user_model
+from django.db.models import Q, Count, Avg
+from django.db import IntegrityError
+from django.views import View
 from .forms import BookForm, ReviewForm
+from .models import Book, Review
+
+User = get_user_model()
 
 class BookView(DetailView):
     """This view displays individual book details"""
@@ -20,8 +29,11 @@ class BookView(DetailView):
 
 class BookCreate(LoginRequiredMixin, CreateView):
     """This view allows users to add books"""
+    model = Book
     form_class = BookForm
     template_name = 'reviews/book_create.html'
+    login_url = 'login-page' # explicit redirect in view but also set in settings.LOGIN_URL
+    redirect_field_name = 'next' # preserves ?next= auto directs user here after login
 
     def form_valid(self, form):
         book = form.save()
@@ -104,6 +116,120 @@ class ReviewDelete(UserOwnedReviewMixin, DeleteView):
         queryset = self.get_queryset().filter(
             book_id=self.kwargs.get('book_id'))
         return get_object_or_404(queryset)
+
+class SearchRedirectView(View):
+    """This view will act as the entry point for the sitewide search bar"""
+    # mpas the <select> value to the URL name of the intended search view
+    SEARCH_DESTINATIONS = {
+        'book': 'book-search',
+        'user': 'user-search',
+    }
+
+    def get(self, request, *args, **kwargs):
+        """This function identifies the search time and search type
+        to redirect the user search"""
+        search_term = request.GET.get('search', '').strip()
+        search_type = request.GET.get('type', 'book')
+
+        destination_name = self.SEARCH_DESTINATIONS.get(search_type, 'book-search')
+
+        destination_url = reverse(destination_name)
+        query_params = urlencode({'search': search_term})
+        return HttpResponseRedirect(f"{destination_url}?{query_params}")
+
+# Helper Method
+# Retrieves URL query string to perform a search
+class QueryStringSearchMixin:
+    """Filters a ListView by the ?search= value in the URL"""
+    #  custom Mixins must appear BEFORE ListView in the class bases
+    # so its get_queryset() runs first
+    searchable_fields: list[str] = [] # list of model fields to match against, set per view
+    query_string_key = 'search' # URL: /books/search/?search=dune
+
+    def paginate_queryset(self, queryset, page_size):
+        """Redirects to page 1 of a bare 404
+        when a page no longer exists within
+        the current result count"""
+        paginator = self.get_paginator(
+            queryset, page_size, 
+            orphans=self.get_paginate_orphans(),
+            allow_empty_first_page=self.get_allow_empty(),
+        )
+        requested_page = self.kwargs.get(self.page_kwarg) or self.request.GET.get(self.page_kwarg) or 1
+
+        try:
+            page = paginator.page(requested_page)
+        except InvalidPage:
+            # sets a user-facing recovery vs dead-end 404
+            page = paginator.page(1)
+        return (paginator, page, page.object_list, page.has_other_pages())
+
+    def get_query_string(self):
+        """Identifies the user's search term from the URL string"""
+        search_term = self.request.GET.get(self.query_string_key, "")
+        return search_term.strip()
+
+    def _validate_searchable_fields(self, model, field_paths):
+        """Confirms searchable fields exist for search against a model"""
+        for path in field_paths:
+            try:
+                model._meta.get_field(path.split('__')[0])
+            except FieldDoesNotExist as exc:
+                raise ImproperlyConfigured(f"Invalid searchable field: {path}") from exc
+
+    def get_queryset(self):
+        """Searches the results of the query"""
+        all_rows = super().get_queryset() # ListView applies model + ordering here
+        search_term = self.get_query_string()
+
+        if not search_term:
+            return all_rows.none() # no search term --> empty result set, not the whole table
+
+        field_matches = Q() # an empty Q() matches nothing until we OR into it
+        for field_name in self.searchable_fields:
+            field_contains_term = Q(**{f"{field_name}__icontains": search_term})
+            field_matches |= field_contains_term # row results qualify if ANY field matches
+
+        return all_rows.filter(field_matches)
+
+    def get_context_data(self, **kwargs):
+        """Returns context object data to pass in the template"""
+        context = super().get_context_data(**kwargs)
+        context["search_term"] = self.get_query_string()
+        # template will refill the search box with this
+        return context
+
+class BookSearchView(QueryStringSearchMixin, ListView):
+    """This view performs a book search"""
+    model = Book
+    searchable_fields = ['title', 'author']
+    ordering = ['title']
+    paginate_by = 10
+    template_name = 'reviews/book_search.html'
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        """This function will retrieve additional data from the resulting book query"""
+        # annotate computes summaries for individual items in a result list
+        # computes count + average per book on page, not per row
+        # makes review_count + avg_score temp data columns to pull in the template
+        return super().get_queryset().annotate(
+            review_count=Count('reviews', distinct=True),
+            avg_score=Avg('reviews__rating', default=0)
+        )
+
+class UserSearchView(LoginRequiredMixin, QueryStringSearchMixin, ListView): # login check runs first
+    """This view performs a user search"""
+    model = User
+    searchable_fields = ['username', 'first_name', 'last_name']
+    ordering = ['username']
+    paginate_by = 15
+    template_name = 'users/user_search.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        matching_users = super().get_queryset() # search filtering from the mixin
+        return matching_users.filter(is_active=True) # hides deactivated accounts
 
 
 class HomepageView(ListView):

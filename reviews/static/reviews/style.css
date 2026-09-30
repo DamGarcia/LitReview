@@ -156,3 +156,28 @@ textarea.create-form {
     text-align: left;
     max-width: 100%;
 }
+
+input#search-input {
+    margin: 1rem 0 1rem;
+    max-width: 500px;
+}
+
+.search-page {
+    width: 60%;
+}
+
+section.search-result {
+    justify-content: center;
+    width: 100%;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+article.book-matches {
+    border: 0;
+}
+
+img.book-thumbnail {
+    max-width: 300px;
+    max-height: 400px;
+}

@@ -19,8 +19,7 @@ class Book(models.Model):
     author = models.CharField(
         verbose_name="Author",
         max_length=50,
-        blank=True,
-        null=True,
+        blank=True
         )
     # upload_to= saves images for a Book under MEDIA_ROOT/images
     image = models.ImageField(upload_to='images/', verbose_name="Image", null=True, blank=True)
@@ -40,7 +39,7 @@ class Review(models.Model):
     headline = models.CharField(max_length=255)
     body = models.TextField(blank=False, null=False)
     rating = models.PositiveSmallIntegerField(
-        validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)]
+        validators=[validators.MinValueValidator(1), validators.MaxValueValidator(5)]
     )
     # related_name= is from the 'targets' perspective / a Review has a user, a User has reviews
     # can have the same related_name= because different model targets

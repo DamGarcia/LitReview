@@ -15,8 +15,12 @@
             <nav><strong>LITReview</strong></nav>
         </div>
         <div class="search-bar">
-            <form action="/search/" method="get" class="search-box">
-                <input type="search" name="q" placeholder="Search for a book..." aria-label="Search" required />
+            <form action="{% url 'search-dispatch' %}" method="get" class="site-search">
+                <select name="type">
+                    <option value="book" {% if request.GET.type != 'user' %}selected{% endif %}>Books & Authors</option>
+                    <option value="user" {% if request.GET.type == 'user' %}selected{% endif %}>Users</option>
+                </select>
+                <input type="text" name="search" placeholder="Search..." value="{{ request.GET.search }}">
             </form>
         </div>
         <!-- this auth check happens in base, because the if check

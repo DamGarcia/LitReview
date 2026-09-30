@@ -1,0 +1,84 @@
+{% extends 'reviews/base.html' %}
+{% load query_tags %}
+
+{% block content %}
+
+<h2>Search for a Book</h2>
+
+<div class="search-page">
+    <!-- GET request, not POST request: a search is a read, not a state change
+     GET keeps the query string in the URL
+     so it's bookmarkable and shareable/back-buttonable -->
+    <form method="get" action="{% url 'book-search' %}" class="search-form">
+        <input type="text" id="search-input" name="search"
+        value="{{ search_term }}" placeholder="Search by Title or Author" autofocus >
+    </form>
+
+    {% if not search_term %}
+        <!-- this path is different from "search_term set but 0 results" 
+        the mixin's.none() on an empty term means this branch
+        and the empty-results branch below are not the same message -->
+        <p class="hint">Enter a title or author above to get started </p>
+
+    {% elif books %}
+        <p class="result-count">
+            Showing results for <strong>"{{ search_term }}"</strong>
+        </p>
+
+    <section class="search-result">
+        <article class="book-matches">
+            {% for book in books %}
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="Cover of {{ book.title }}" class="book-thumbnail">
+                {% endif %}
+                
+                <p><a href="{% url 'book-review' book.id %}">{{ book.title }} - {{ book.author }}</a></p>
+                <div class="review-count">
+                    <span class="review-count"> {{ book.review_count }} reviews</span>
+                    <br>
+                
+                    <br>
+                    <span class="avg-score">
+                        {% if book.avg_score %}
+                            Average Score:
+                            <div class="star-rating-display" style="--rating: {{ book.avg_score}};"
+                                aria-label="{{ book.avg_score }} out of 5 stars">
+                            </div>
+                            {{ book.avg_score|floatformat:1 }} / 5
+                        {% else %}
+                            No ratings yet
+                        {% endif %}
+                    </span>
+                </div>
+            {% endfor %}
+        </article>
+    </section>
+
+    {% if user.is_authenticated %}
+        <a class="btn" href="{% url 'book-create' %}">Create a new book</a>
+    {% else %}
+        <a class="btn" href="{% url 'login-page' %}?next={{ request.path }}">Log in / Sign up to create a new book</a>
+    {% endif %}
+
+    {% if is_paginated %}
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+            <!-- search= must be carried across every pagination link
+            otherwise the search silently drops -->
+                <a href="?{% querystring_replace page=page_obj.previous_page_number %}">&laquo; Prev</a>
+            {% endif %}
+
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?{% querystring_replace page=page_obj.next_page_number %}">Next &raquo;</a>
+            {% endif %}
+        </nav>
+    {% endif %}
+
+    {% else %}
+        <p class="no-results">No books found match "{{ search_term }}"</p>
+    {% endif %}
+
+</div>
+{% endblock %}
