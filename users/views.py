@@ -24,7 +24,8 @@ class UserLoginView(LoginView):
         # only works if urls.py is loaded before line execution --
         # which is true for a view method as the urls.py is loaded before the view method is called
         return reverse('user-profile',
-                       kwargs={'username': self.request.user.username}) # redirect to user profile
+                       kwargs={'username': self.request.user.username}
+                       )  # redirect to user profile
 
 class UserSignUpView(CreateView):
     """This class handles the signup page for the LitReview project"""
@@ -33,7 +34,7 @@ class UserSignUpView(CreateView):
 
     def form_valid(self, form):
         """This method defines the behavior when a form is valid"""
-        form.save() # save the user object to the database
+        form.save()  # save the user object to the database
         return render(self.request, 'users/signup_page.html',
                       {'success': True})
         # render the signup page with a success message

@@ -41,7 +41,7 @@ class BookCreate(LoginRequiredMixin, CreateView):
 
 
 class UserOwnedReviewMixin(LoginRequiredMixin):
-    """Custom mixin for views that mutate or 
+    """Custom mixin for views that mutate or
     access reviews owned by the logged-in user"""
 
     success_url = None # can be overriden on the view class
@@ -372,7 +372,7 @@ class HomepageView(ListView):
     #     user = self.request.user
 
     #     # feed reviews should be filtered by the logged-in users following list
-    #     # 'following' is a Model2Model on User, 
+    #     # 'following' is a Model2Model on User,
     #     following_reviews = Review.objects.filter(author__in=user.following.all())
 
 # SQL:

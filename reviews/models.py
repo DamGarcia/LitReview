@@ -20,8 +20,7 @@ class Book(models.Model):
         verbose_name="Author",
         max_length=50,
         blank=True,
-        null=True
-        )
+        null=True,)
     # upload_to= saves images for a Book under MEDIA_ROOT/images
     image = models.ImageField(upload_to='images/', verbose_name="Image", null=True, blank=True)
 

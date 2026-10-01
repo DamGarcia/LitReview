@@ -16,8 +16,7 @@ class User(AbstractUser):
                                        symmetrical=False, blank=True)
     email = models.EmailField(_("email address"), unique=True, blank=False,
                               error_messages={
-                                  "unique": _("A user with that email already exists.")
-                                  }
+                                  "unique": _("A user with that email already exists.")}
                               )
 
     @property

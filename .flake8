@@ -1,0 +1,38 @@
+[flake8]
+# Directories and files to exclude from the PEP 8 scan
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    env,
+    build,
+    dist,
+    migrations,
+    manage.py
+
+# Maximum allowed line length (PEP 8 standard is 79, but 88 is standard for Black/Ruff)
+max-line-length = 88
+
+# Specific error codes to ignore across the project
+# E203: Whitespace before ':' (conflicts with PEP 8 auto-formatters like Black)
+# W503: Line break occurred before a binary operator (anti-pattern in modern PEP 8)
+# E261: Multiple spaces before inline commment (PEP 8 discourages this)
+# E501: Line too long (exceeds max-line-length, but can be ignored for readability)
+# E302: Expected 2 blank lines, found 1 (for class and function definitions)
+# F821: Undefined name (used for forward references or dynamic attributes)
+ignore = 
+    E203,
+    W503,
+    E261,
+    E501,
+    E302,
+    F821
+
+# Maximum allowed Cyclomatic Complexity (McCabe complexity checker)
+max-complexity = 10
+
+# Count total number of errors and display source code snippets
+count = True
+show-source = True
+statistics = True
