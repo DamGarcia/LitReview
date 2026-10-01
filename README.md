@@ -23,16 +23,19 @@ A web app where readers write reviews of books and articles, and follow other us
 
 | Component | Version | Notes |
 | ----------- | --------- | ------- |
-| Python | **3.8 – 3.10** | Django 4.0 does not officially support 3.11+ |
-| Django | 4.0.5 | Pinned in `requirements.txt` |
-| Pillow | 9.1.1 | Required for the book cover `image` field |
+| Python | **3.12 – 3.14** | Django 6.0 dropped support for 3.11 and older |
+| Django | 6.0.7 | Pinned in `requirements.txt` |
+| Pillow | 12.3.0 | Required for the book cover `image` field |
 | Database | SQLite | Django default, no setup needed |
+| Dev tools | flake8, isort, pylint, pylint-django, django-stubs | Code quality only; see [Code Quality](#code-quality) |
 
 Check your Python version before starting:
 
 ```bash
 python3 --version   # Windows: python --version
 ```
+
+If it prints 3.11 or lower, install Python 3.12 or newer from [python.org](https://www.python.org/downloads/) first. Older versions fail at `pip install` because Django 6.0 will not install on them.
 
 ---
 
@@ -60,6 +63,8 @@ source venv/bin/activate
 python -m venv venv
 venv\Scripts\Activate.ps1
 ```
+
+If several Python versions are installed on Windows, pick one explicitly: `py -3.12 -m venv venv`.
 
 Your prompt should now start with `(venv)`.
 
@@ -191,6 +196,18 @@ cara  (follows nobody)
 ```
 
 <!-- TODO: adjust to match the real folder layout -->
+
+---
+
+## Code Quality
+
+The linters in `requirements.txt` install automatically. Run them from the project root with the virtual environment active:
+
+```bash
+flake8                          # style and common errors
+isort --check-only --diff .     # import ordering (drop the flags to auto-fix)
+pylint --load-plugins=pylint_django --django-settings-module=<project_config>.settings users reviews
+```
 
 ---
 
