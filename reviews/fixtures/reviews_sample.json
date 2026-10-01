@@ -1,0 +1,173 @@
+[
+    {
+        "model": "users.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$720000$litreviewfix$pwdtXjaWqvCGs8RshphT++mfKYBBS7HsNPqr2QsJ35M=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "ann",
+            "first_name": "Ann",
+            "last_name": "Lee",
+            "email": "ann@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-10T09:00:00Z",
+            "groups": [],
+            "user_permissions": [],
+            "following": [
+                2,
+                3
+            ]
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$720000$litreviewfix$pwdtXjaWqvCGs8RshphT++mfKYBBS7HsNPqr2QsJ35M=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "bob",
+            "first_name": "Bob",
+            "last_name": "Stone",
+            "email": "bob@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-10T09:00:00Z",
+            "groups": [],
+            "user_permissions": [],
+            "following": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$720000$litreviewfix$pwdtXjaWqvCGs8RshphT++mfKYBBS7HsNPqr2QsJ35M=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "cara",
+            "first_name": "Cara",
+            "last_name": "Diaz",
+            "email": "cara@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-10T09:00:00Z",
+            "groups": [],
+            "user_permissions": [],
+            "following": []
+        }
+    },
+    {
+        "model": "reviews.book",
+        "pk": 1,
+        "fields": {
+            "title": "A Wizard of Earthsea",
+            "description": "A young wizard confronts the shadow he released.",
+            "created": "2024-01-15T10:00:00Z",
+            "author": "Ursula K. Le Guin",
+            "image": null
+        }
+    },
+    {
+        "model": "reviews.book",
+        "pk": 2,
+        "fields": {
+            "title": "Kindred",
+            "description": "A modern woman is pulled back into antebellum Maryland.",
+            "created": "2024-01-15T10:00:00Z",
+            "author": "Octavia Butler",
+            "image": null
+        }
+    },
+    {
+        "model": "reviews.book",
+        "pk": 3,
+        "fields": {
+            "title": "Dune",
+            "description": "Politics and prophecy on the desert planet Arrakis.",
+            "created": "2024-01-15T10:00:00Z",
+            "author": "Frank Herbert",
+            "image": null
+        }
+    },
+    {
+        "model": "reviews.book",
+        "pk": 4,
+        "fields": {
+            "title": "Untitled Field Notes",
+            "description": "",
+            "created": "2024-01-15T10:00:00Z",
+            "author": null,
+            "image": null
+        }
+    },
+    {
+        "model": "reviews.review",
+        "pk": 1,
+        "fields": {
+            "book": 1,
+            "headline": "A quiet classic",
+            "body": "Simple prose, huge ideas about balance and naming.",
+            "rating": 5,
+            "user": 1,
+            "created": "2024-02-01T12:00:00Z",
+            "updated": "2024-02-01T12:00:00Z"
+        }
+    },
+    {
+        "model": "reviews.review",
+        "pk": 2,
+        "fields": {
+            "book": 1,
+            "headline": "Slow but rewarding",
+            "body": "Took a while to hook me, then it did.",
+            "rating": 4,
+            "user": 2,
+            "created": "2024-02-03T18:30:00Z",
+            "updated": "2024-02-03T18:30:00Z"
+        }
+    },
+    {
+        "model": "reviews.review",
+        "pk": 3,
+        "fields": {
+            "book": 2,
+            "headline": "Hard to put down",
+            "body": "Brutal and gripping from the first chapter.",
+            "rating": 5,
+            "user": 1,
+            "created": "2024-02-10T08:15:00Z",
+            "updated": "2024-02-10T08:15:00Z"
+        }
+    },
+    {
+        "model": "reviews.review",
+        "pk": 4,
+        "fields": {
+            "book": 3,
+            "headline": "Overhyped for me",
+            "body": "Dense world-building that never grabbed me.",
+            "rating": 2,
+            "user": 3,
+            "created": "2024-02-12T20:45:00Z",
+            "updated": "2024-02-12T20:45:00Z"
+        }
+    },
+    {
+        "model": "reviews.review",
+        "pk": 5,
+        "fields": {
+            "book": 3,
+            "headline": "Epic",
+            "body": "Layers of politics and ecology.",
+            "rating": 4,
+            "user": 2,
+            "created": "2024-02-14T14:00:00Z",
+            "updated": "2024-02-14T14:00:00Z"
+        }
+    }
+]
