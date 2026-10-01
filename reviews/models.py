@@ -25,6 +25,25 @@ class Book(models.Model):
     # upload_to= saves images for a Book under MEDIA_ROOT/images
     image = models.ImageField(upload_to='images/', verbose_name="Image", null=True, blank=True)
 
+    class Meta:
+        """This class handles configuration of the model"""
+        ordering = ['title']
+        constraints = [
+            models.UniqueConstraint(fields=['title', 'author'], name='unique_book')
+        ]
+
+    def clean(self):
+        """This method is called when the model is saved and can be used to validate the model"""
+        super().clean()
+        if self.title:
+            # removed whitespace
+            self.title = " ".join(self.title.split())
+
+    def save(self, *args, **kwargs):
+        """Ensures that the model is cleaned before saving"""
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{Truncator(self.title).chars(30)}"
 
