@@ -185,6 +185,22 @@ form p .helptext {
     line-height: 1.35;
 }
 
+form.site-search {
+    width: 40%;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
 ul {
     margin: 0.35rem 0 0 0;
     padding-left: 40px;
@@ -201,18 +217,6 @@ ul {
     color: #6c757d;
     line-height: 1.4;
     margin-bottom: 0.2rem;
-}
-
-form input[type="text"],
-form input[type="password"],
-form input[type="email"],
-form textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    box-sizing: border-box;
 }
 
 /* --- Form Buttons & Action Links --- */
@@ -316,4 +320,37 @@ input[type="button"]:active,
 
 .search-box button:active {
     transform: scale(0.92);
+}
+
+section.user-profile-page {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+article.user-reviews {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+article.user-details,
+article.user-following,
+article.user-followers {
+    width: 600px;
+    padding: .8rem;
+    border-radius: 10px;
+    line-height: 0.5;
+}
+
+.search-form {
+    display: flow;
+    text-align: center;
+    width: 30%;
+}
+
+.review-cards {
+    margin-bottom: 3rem;
+    border-bottom: 2px solid black;
+    padding-bottom: 15px;
 }

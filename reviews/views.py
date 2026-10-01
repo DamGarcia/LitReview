@@ -1,18 +1,18 @@
 """This module contains the book reviews view for the LitReview Project"""
 from urllib.parse import urlencode
 from django.views.generic import DeleteView, DetailView, CreateView, ListView, UpdateView
-from django.core.exceptions import FieldDoesNotExist, ImproperlyConfigured
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
-from django.core.paginator import InvalidPage
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
-from django.contrib.auth import get_user_model
-from django.db.models import Q, Count, Avg
 from django.db import IntegrityError
+from django.db.models import Q, Count, Avg, Value, CharField
+from django.db.models.functions import Concat
 from django.views import View
 from .forms import BookForm, ReviewForm
 from .models import Book, Review
+
 
 User = get_user_model()
 
@@ -52,17 +52,20 @@ class UserOwnedReviewMixin(LoginRequiredMixin):
         return queryset.filter(user=self.request.user)
 
     def get_success_url(self):
-        """Returns explicitly defined success_url,
-        or fallback to a default named URL"""
-        if self.success_url:
-            return str(self.success_url)
+        """Determines redirection URL after a successful update or deletetion"""
+        # Extract the book_id from the URL kwargs
+        book_id = self.kwargs.get('book_id')
 
-        if hasattr(self.object, 'get_absolute_url'):
+        if book_id:
+            # Redirect to the book review page if book_id is available
+            return reverse('book-review', args=[book_id])
+
+        # Fallback to the model default success_url if book_id is not available
+        if hasattr(self, 'object') and self.object and hassattr(self.object, 'get_absolute_url'):
             return self.object.get_absolute_url()
 
-        # need to wrap in str() because the classes using this custom mixin
-        # expect to return a type str(), not a _StrPromise --> reverse_lazy()
-        return str(reverse_lazy('login-page'))
+        # Default fallback to the home page if no other URL is available
+        return str(reverse_lazy('home-page'))
 
 class ReviewCreate(LoginRequiredMixin, CreateView):
     """This view allows users to post reviews"""
@@ -117,6 +120,9 @@ class ReviewDelete(UserOwnedReviewMixin, DeleteView):
             book_id=self.kwargs.get('book_id'))
         return get_object_or_404(queryset)
 
+
+# Helper Classes and Views
+# Redirects Users to appropriate search views
 class SearchRedirectView(View):
     """This view will act as the entry point for the sitewide search bar"""
     # mpas the <select> value to the URL name of the intended search view
@@ -137,7 +143,6 @@ class SearchRedirectView(View):
         query_params = urlencode({'search': search_term})
         return HttpResponseRedirect(f"{destination_url}?{query_params}")
 
-# Helper Method
 # Retrieves URL query string to perform a search
 class QueryStringSearchMixin:
     """Filters a ListView by the ?search= value in the URL"""
@@ -146,39 +151,13 @@ class QueryStringSearchMixin:
     searchable_fields: list[str] = [] # list of model fields to match against, set per view
     query_string_key = 'search' # URL: /books/search/?search=dune
 
-    def paginate_queryset(self, queryset, page_size):
-        """Redirects to page 1 of a bare 404
-        when a page no longer exists within
-        the current result count"""
-        paginator = self.get_paginator(
-            queryset, page_size, 
-            orphans=self.get_paginate_orphans(),
-            allow_empty_first_page=self.get_allow_empty(),
-        )
-        requested_page = self.kwargs.get(self.page_kwarg) or self.request.GET.get(self.page_kwarg) or 1
-
-        try:
-            page = paginator.page(requested_page)
-        except InvalidPage:
-            # sets a user-facing recovery vs dead-end 404
-            page = paginator.page(1)
-        return (paginator, page, page.object_list, page.has_other_pages())
-
     def get_query_string(self):
         """Identifies the user's search term from the URL string"""
         search_term = self.request.GET.get(self.query_string_key, "")
         return search_term.strip()
 
-    def _validate_searchable_fields(self, model, field_paths):
-        """Confirms searchable fields exist for search against a model"""
-        for path in field_paths:
-            try:
-                model._meta.get_field(path.split('__')[0])
-            except FieldDoesNotExist as exc:
-                raise ImproperlyConfigured(f"Invalid searchable field: {path}") from exc
-
     def get_queryset(self):
-        """Searches the results of the query"""
+        """Applies dynamic ORM filtering to the base queryset based on the search term"""
         all_rows = super().get_queryset() # ListView applies model + ordering here
         search_term = self.get_query_string()
 
@@ -198,6 +177,95 @@ class QueryStringSearchMixin:
         context["search_term"] = self.get_query_string()
         # template will refill the search box with this
         return context
+
+# Toggles the follow/unfollow logic
+class ToggleFollowView(LoginRequiredMixin, View):
+    """POST request endpoint to toggle the follow state"""
+
+    def post(self, request, username, *args, **kwargs):
+        """Defines the action within the POST request"""
+        # fetch target user profile
+        target_user = get_object_or_404(User, username=username, is_active=True)
+
+        if request.user == target_user:
+            return redirect('user-profile', username=username)
+
+        # Evaluate the behind-the-scenes M2M manager
+        if request.user.following.filter(id=target_user.id).exists():
+            # removes relationship from hidden join table
+            request.user.following.remove(target_user)
+        else:
+            # inserts relatinoship into hidden join table
+            request.user.following.add(target_user)
+
+        return redirect('user-profile', username=username)
+
+# Handles base logic for user profile filtering and context processing
+class BaseProfileView(LoginRequiredMixin, DetailView):
+    """Abstract base view for displaying user profiles.
+    Encapsulates shared queryset filtering and context processing."""
+    model = User
+    context_object_name = 'user_profile'
+    # child classes will need to define get_object()
+
+    def get_queryset(self):
+        """Defines the base queryset for the view - enforces system-wide filtering of active users"""
+        # prevents N+1 queries through optimized database lookups by prefetching M2M relationships
+        return User.objects.filter(is_active=True).prefetch_related(
+            'followers',
+            'following'
+        )
+
+    def get_context_data(self, **kwargs):
+        """Extends context to template to include related model data"""
+        context = super().get_context_data(**kwargs)
+        profile_user = self.object
+
+        # pre-fetch or calculate related model data - i.e active followers/following in M2M relations
+        # related_name strings should match the ORM models
+        context['followers'] = [user for user in profile_user.followers.all() if user.is_active]
+        context['following'] = [user for user in profile_user.following.all() if user.is_active]
+
+        # checks if requesting user follows this profile
+        context['is_following'] = False
+        if self.request.user.is_authenticated and self.request.user != profile_user:
+            context['is_following'] = self.request.user.following.filter(id=profile_user.id).exists()
+
+        # fetch profile reviews
+        if hasattr(profile_user, 'reviews'):
+            context['reviews'] = profile_user.reviews.select_related('book').order_by('-created')
+
+        return context
+
+
+class MyProfileView(BaseProfileView):
+    """This view displays the authenticated user's own profile page"""
+    template_name = 'users/user_profile.html'
+
+    def get_object(self, queryset=None):
+        # return auth user attached to the request
+        return self.request.user
+
+class UserProfileView(BaseProfileView):
+    """This view displays another user's profile page"""
+    template_name = 'users/other_user_profile.html'
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        # extract target username from URL kwargs
+        username = self.kwargs.get('username')
+
+        # safely query active user queryset
+        return get_object_or_404(queryset, username=username)
+
+    def get_template_names(self):
+        """Dynamically selects the template."""
+        if self.object == self.request.user:
+            return ['users/user_profile.html']
+        return ['users/other_user_profile.html']
+
 
 class BookSearchView(QueryStringSearchMixin, ListView):
     """This view performs a book search"""
@@ -221,15 +289,30 @@ class BookSearchView(QueryStringSearchMixin, ListView):
 class UserSearchView(LoginRequiredMixin, QueryStringSearchMixin, ListView): # login check runs first
     """This view performs a user search"""
     model = User
-    searchable_fields = ['username', 'first_name', 'last_name']
+    searchable_fields = ['username', 'first_name', 'last_name', 'full_name_db']
     ordering = ['username']
     paginate_by = 15
     template_name = 'users/user_search.html'
     context_object_name = 'users'
 
     def get_queryset(self):
+        # inject a pre-annotated base queryset
+        # to enable super().get_queryset() the ability to match against
+        # a concatenated 'first last' string | a computed DB column
+        self.queryset = User.objects.annotate(
+            full_name_db=Concat('first_name', Value(' '), 'last_name', output_field=CharField())
+        )
         matching_users = super().get_queryset() # search filtering from the mixin
-        return matching_users.filter(is_active=True) # hides deactivated accounts
+        return matching_users.filter(is_active=True).annotate(
+            # hides deactivated accounts
+            review_count=Count('reviews', distinct=True),
+            follower_count=Count('followers', distinct=True),
+            following_count=Count('following', distinct=True),
+        )
+        # each annotation is an aggregation of DB data once per page load
+        # calculated by table columns per model based on data attributes/fields
+        # distinct=True prevents (fan-out bug) -- multiple joins on reverse/M2M relations
+        # in a single query multiplies rows before COUNT runs
 
 
 class HomepageView(ListView):

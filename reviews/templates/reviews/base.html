@@ -28,7 +28,7 @@
              which is inside this base template -->
         <div class="nav-item">
             {% if user.is_authenticated %}
-                <a href="{% url 'user-profile' user.username %}">My profile</a>
+                <a href="{% url 'my-profile' %}">My profile</a>
             {% endif %}
         </div>
         <div class="nav-item">

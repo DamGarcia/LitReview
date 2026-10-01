@@ -1,25 +1,64 @@
-{% extends 'users/base.html' %}
+{% extends 'reviews/base.html' %}
 
 {% block content %}
 
 <h1>{{ user_profile.username }}'s Profile Page</h1>
 
-<p>Currently in progress...</p>
+<section class="user-profile-page">
+    <article class="user-details">
+        <p>Name: {{ user_profile.full_name }}</p>
+        <p>Email: {{ user_profile.email }}</p>
+    </article>
 
-<!-- a block level text box that includes user information: name, email, etc. -->
- <!-- a block level text box that includes who the user is following,
-  with the capability (button) to unfollow those users -->
-<!-- a block level text box that includes those who are following the user -->
-<!-- a block level text box (search bar) to find users -->
-<!-- a block level box view with a list of the user's reviews
- Include:
-    Book image
-    Book title
-    Comment subject title
-    comment
-    "Review post on Mar 20, 2022 at 10:10AM"
-    'Edit Review' (button)
-    'Delete Review' (button) -->
+    <h2>Following</h2>
+    <article class="user-following">
+        {% for follow in following %}
+          <ul>
+            <li>
+              <a href="{% url 'user-profile' follow.username %}">{{ follow.username }}</a>
+            </li>
+        {% empty %}
+            <li>You are not following anyone yet</li>
+        {% endfor %}
+          </ul>
+    </article>
 
+    <h2>Followers</h2>
+    <article class="user-followers">
+        {% for follow in followers %}
+          <ul>
+            <li>
+              <a href="{% url 'user-profile' follow.username %}">{{ follow.username }}</a>
+            </li>
+        {% empty %}
+            <li>No on is following you yet</li>
+        {% endfor %}
+          </ul>
+    </article>
+
+    <h2>My Reviews</h2>
+    <article class="user-reviews">
+      {% for review in reviews %}
+        <div class="review-cards">
+            {% if review.book.image.url %}
+              <img src="{{ review.book.image.url }}" alt="Cover of {{ review.book.title }}" class="book-thumbnail">
+            {% endif %}
+
+            <p class="book-title"><a href="{% url 'book-review' review.book.id %}">{{ review.book.title }} - {{ review.book.author }}</a></p>
+
+            <strong>{{ review.headline }}</strong> - 
+            <div class="star-rating-display" style="--rating: {{ review.rating }};" aria-label="{{ review.rating }} out of 5 stars"></div>
+            <br>
+            <p class="review-preview"><small>{{ review.body|truncatewords:40 }}</small></p>
+            <small>Review posted on {{ review.created|date:"F d, Y \a\t g:iA" }}</small>
+
+            <small><a href="{% url 'review-update' review.book.id %}">Update review</a><span>&#9998;</span></small> |
+            <small><a href="{% url 'review-delete' review.book.id %}">Delete review</a><span>&#128465;</span></small>
+        </div>
+      {% empty %}
+        <p>You haven't written any reviews yet</p>
+      {% endfor %}
+    </article>
+</section>
 
 {% endblock %}

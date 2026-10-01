@@ -1,0 +1,55 @@
+{% extends 'reviews/base.html' %}
+{% load query_tags %}
+
+{% block content %}
+
+<h2>Search for Users</h2>
+
+<div class="search-page">
+
+    {% if not search_term %}
+        <p class="hint">Enter a full name or username to get started</p>
+
+    {% elif users %}
+        <p class="result-set">
+            Showing results for <strong>{{ search_term }}</strong>
+        </p>
+
+    <section class="search-result">
+        {% for user in users %}
+            <article class="user-search">
+                <div class="user-matches">
+                    <p class="user-username"><a href="{% url 'user-profile' user.username %}">{{ user.username }}</a></p>
+                    <br>
+                    <span class="review-count">{{ user.review_count }} Reviews</span>
+                    <br>
+                    <span class="follower-count">{{ user.follower_count }} Followers</span>
+                    <br>
+                    <span class="following-count">{{ user.following_count }} Following</span>
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+
+    {% if is_paginated %}
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+            <!-- search= must be carried across every pagination link
+                        otherwise the search silently drops -->
+                <a href="?{% querystring_replace page=page_obj.previous_page_number %}">&laquo; Prev</a>
+            {% endif %}
+        
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        
+            {% if page_obj.has_next %}
+                <a href="?{% querystring_replace page=page_obj.next_page_number %}">Next &raquo;</a>
+            {% endif %}
+        </nav>
+    {% endif %}
+        
+    {% else %}
+        <p class="no-results">No users found match "{{ search_term }}"</p>
+    {% endif %}
+</div>
+
+{% endblock %}

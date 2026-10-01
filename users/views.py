@@ -1,10 +1,9 @@
 """This module contains the user views for the LitReview project"""
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView
 from django.urls import reverse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 
 from .forms import UserSignUpForm, UserLoginForm
 
@@ -47,16 +46,3 @@ class UserSignUpView(CreateView):
     # Unnecessary to override form_invalid() because
     # the default behavior is to re-render the form with errors
     # handled by the template, which is what we want
-
-class UserProfileView(LoginRequiredMixin, DetailView):
-    """This class handles the user profile page for the LitReview project"""
-    model = User
-    template_name = 'users/user_profile.html'
-    context_object_name = 'user_profile'
-    # because user is a default context variable name for the user object in Django
-    # we use user_profile as the context variable name to avoid confusion
-
-    def get_object(self, queryset=None):
-        """This method returns the user object for the user profile page"""
-        queryset = self.get_queryset().filter(username=self.kwargs.get('username'))
-        return get_object_or_404(queryset)

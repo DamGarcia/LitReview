@@ -8,11 +8,11 @@ class User(AbstractUser):
 
     # We reuse the fields definitions from the parent class, but change `blank` to False
     # We want to make sure first and last names are always provided
-    first_name = models.CharField(_("first name"), max_length=150, blank=False)
-    last_name = models.CharField(_("last name"), max_length=150, blank=False)
+    first_name = models.CharField(_("first name"), max_length=150, blank=False, null=False)
+    last_name = models.CharField(_("last name"), max_length=150, blank=False, null=False)
 
     # This is our custom fields
-    following = models.ManyToManyField("self", related_name="followers", 
+    following = models.ManyToManyField("self", related_name="followers",
                                        symmetrical=False, blank=True)
     email = models.EmailField(_("email address"), unique=True, blank=False,
                               error_messages={

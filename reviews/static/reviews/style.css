@@ -8,11 +8,12 @@
 }
 
 .book-details img {
-    width: 250px;
+    width: 400px;
     max-width: 35%;
     height: auto;
     flex-shrink: 0;
     object-fit: contain;
+    align-self: center;
 }
 
 .book-description {
@@ -179,5 +180,31 @@ article.book-matches {
 
 img.book-thumbnail {
     max-width: 300px;
-    max-height: 400px;
+    max-height: 300px;
+}
+
+article.book-search {
+    text-align: center;
+    border: none;
+}
+
+.book-matches {
+    margin-bottom: 2rem;
+    border: 2px solid black;
+    padding: 1.5rem;
+}
+
+p.book-title {
+    text-align: center;
+    max-width: none;
+}
+
+p.review-preview {
+    text-align: center;
+    max-width: 600px;
+}
+
+article.user-search {
+    width: 80%;
+    height: 10rem;
 }

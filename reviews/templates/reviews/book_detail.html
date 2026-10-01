@@ -36,7 +36,7 @@ review content -->
     {% for review in book.reviews.all %}
     <article>
         <header>
-            <small>New review by <u>{{ review.user.username }}</u> on {{ review.created|date:"F d, Y \a\t g:iA" }}</small> |
+            <small>New review by <u><a href="{% url 'user-profile' review.user.username %}">{{ review.user.username }}</a></u> on {{ review.created|date:"F d, Y \a\t g:iA" }}</small> |
             <!-- if the review was made by the logged-in user add edit/delete features -->
             {% if user.username == review.user.username %}
             <small><a href="{% url 'review-update' book.id %}">Update review</a><span>&#9998;</span></small> |
