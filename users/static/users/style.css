@@ -12,21 +12,22 @@ body {
 }
 
 .signup-btn {
-    background-color: #27cc6b;
+    background-color: #00b144;
     color: #ffffff;
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
-    padding: 12px 24px;
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease,
+        transform 0.1s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-decoration: none;
 }
 
-/* Hover state: slightly darker blue and rises slightly */
+/* Hover state: slightly lighter green and rises slightly */
 .signup-btn:hover {
     background-color: #20aa5a;
     transform: translateY(-1px);
@@ -41,7 +42,7 @@ body {
 
 /* Focus state for accessibility */
 .signup-btn:focus-visible {
-    outline: 2px solid #2563eb;
+    outline: 2px solid #8dd1a7;
     outline-offset: 2px;
 }
 
@@ -77,6 +78,7 @@ p {
     text-align: center;
     justify-content: center;
     padding: 2px;
+    margin: .4rem;
 }
 
 .nav-item:first-child {
@@ -103,7 +105,8 @@ p {
     display: flex;
     justify-content: center;;
     width: 1400px;
-    margin-left: 125px;
+    margin-left: 120px;
+    margin-right: 120px;
 }
 
 .logout-form {
@@ -241,14 +244,17 @@ button:hover,
 input[type="submit"]:hover,
 input[type="button"]:hover,
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #20aa5a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 button:active,
 input[type="submit"]:active,
 input[type="button"]:active,
 .btn:active {
-    transform: scale(0.98);
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Outer Container --- */
@@ -340,7 +346,7 @@ article.user-followers {
     width: 600px;
     padding: .8rem;
     border-radius: 10px;
-    line-height: 0.5;
+    line-height: 1.5;
 }
 
 .search-form {

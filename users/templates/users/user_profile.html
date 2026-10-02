@@ -40,7 +40,7 @@
     <article class="user-reviews">
       {% for review in reviews %}
         <div class="review-cards">
-            {% if review.book.image.url %}
+            {% if review.book.image %}
               <img src="{{ review.book.image.url }}" alt="Cover of {{ review.book.title }}" class="book-thumbnail">
             {% endif %}
 

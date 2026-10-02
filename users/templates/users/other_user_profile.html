@@ -21,35 +21,35 @@
 
     <h2>Following</h2>
     <article class="user-following">
-        {% for follow in following %}
         <ul>
-            <li>
-                <a href="{% url 'user-profile' follow.username %}">{{ follow.username }}</a>
-            </li>
-        {% empty %}
-            <li>Not following anyone yet</li>
+            {% for follow in following %}
+                <li>
+                    <a href="{% url 'user-profile' follow.username %}">{{ follow.username }}</a><br>
+                </li>
+            {% empty %}
+                <li>Not following anyone yet</li>
+                {% endfor %}
         </ul>
-        {% endfor %}
     </article>
 
     <h2>Followers</h2>
     <article class="user-followers">
-        {% for follow in followers %}
         <ul>
-            <li>
-                <a href="{% url 'user-profile' follow.username %}">{{ follow.username }}</a>
-            </li>
-        {% empty %}
-            <li>No followers yet</li>
+            {% for follow in followers %}
+                <li>
+                    <a href="{% url 'user-profile' follow.username %}">{{ follow.username }}</a>
+                </li>
+            {% empty %}
+                <li>No followers yet</li>
+                {% endfor %}
         </ul>
-        {% endfor %}
     </article>
 
     <h2>{{ user_profile.username }}'s Reviews</h2>
     <article class="user-reviews">
         {% for review in reviews %}
             <div class="review-cards">
-                {% if review.book.image.url %}
+                {% if review.book.image %}
                     <img src="{{ review.book.image.url }}" alt="Cover of {{ review.book.title }}" class="book-thumbnail">
                 {% endif %}
 
